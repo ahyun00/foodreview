@@ -1,0 +1,350 @@
+
+/* ========================================
+   마이페이지
+======================================== */
+
+.mypage-main {
+    padding-top: 80px;
+    padding-bottom: 100px;
+}
+
+/* 페이지 제목 */
+
+.mypage-heading {
+    margin-bottom: 56px;
+}
+
+.mypage-heading h1 {
+    margin: 0 0 16px;
+    font-size: clamp(32px, 4vw, 46px);
+    letter-spacing: -1.5px;
+}
+
+.mypage-heading > p:last-child {
+    margin: 0;
+    color: var(--gray);
+}
+
+/* 섹션 */
+
+.mypage-section {
+    margin-bottom: 64px;
+}
+
+.mypage-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.mypage-section-heading h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+/* 회원정보 */
+
+.mypage-profile {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 36px;
+    padding: 36px;
+    border: 1px solid var(--light-gray);
+    border-radius: 10px;
+}
+
+.mypage-profile-item span {
+    color: var(--gray);
+    font-size: 13px;
+}
+
+.mypage-profile-item p {
+    margin: 8px 0 0;
+    overflow-wrap: anywhere;
+}
+
+/* 방문 인증 테이블 */
+
+.mypage-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--light-gray);
+    border-radius: 10px;
+}
+
+.mypage-table {
+    min-width: 700px;
+}
+
+.mypage-table th,
+.mypage-table td {
+    padding: 18px 20px;
+    font-size: 14px;
+}
+
+.mypage-table th {
+    color: var(--gray);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.mypage-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* 승인 상태 */
+
+.mypage-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.mypage-status.pending {
+    background: #f1f1f1;
+    color: #666666;
+}
+
+.mypage-status.approved {
+    background: #e8f4ec;
+    color: #2c7650;
+}
+
+.mypage-status.rejected {
+    background: #fcecec;
+    color: #b04545;
+}
+
+/* 리뷰 링크 */
+
+.mypage-action-link {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.mypage-action-muted {
+    color: var(--gray);
+    font-size: 13px;
+}
+
+/* 방문 인증 내역 없음 */
+
+.mypage-empty {
+    padding: 60px 20px;
+    border: 1px solid var(--light-gray);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.mypage-empty p {
+    margin: 0 0 16px;
+    color: var(--gray);
+}
+
+.mypage-empty a {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* 하단 링크 */
+
+.mypage-bottom {
+    padding-top: 24px;
+    border-top: 1px solid var(--light-gray);
+    text-align: right;
+}
+
+.mypage-bottom a {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* 모바일 */
+
+@media (max-width: 700px) {
+
+    .mypage-main {
+        padding-top: 48px;
+        padding-bottom: 64px;
+    }
+
+    .mypage-profile {
+        grid-template-columns: 1fr;
+        padding: 24px;
+    }
+
+    .mypage-section-heading {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+
+
+/* ========================================
+   회원정보 수정 폼
+======================================== */
+
+.member-form-main {
+    max-width: 760px;
+    padding-top: 80px;
+    padding-bottom: 100px;
+}
+
+/* 페이지 제목 */
+
+.member-form-heading {
+    margin-bottom: 44px;
+}
+
+.member-form-heading h1 {
+    margin: 0 0 16px;
+    font-size: clamp(30px, 4vw, 42px);
+    letter-spacing: -1.5px;
+}
+
+.member-form-heading > p:last-child {
+    margin: 0;
+    color: var(--gray);
+}
+
+/* 입력 폼 */
+
+.member-form {
+    display: grid;
+    gap: 28px;
+}
+
+.member-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.member-form-field label {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.member-form-field input {
+    width: 100%;
+}
+
+/* 오류 메시지 */
+
+.member-form-error {
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    border: 1px solid #e8b9b9;
+    border-radius: 6px;
+    background: #fff7f7;
+    color: #b42318;
+    font-size: 14px;
+}
+
+/* 하단 버튼 */
+
+.member-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid var(--light-gray);
+}
+
+.member-form-actions button {
+    min-width: 120px;
+}
+
+/* 모바일 */
+
+@media (max-width: 700px) {
+
+    .member-form-main {
+        padding-top: 48px;
+        padding-bottom: 64px;
+    }
+
+    .member-form {
+        gap: 24px;
+    }
+
+}
+
+
+
+
+
+/* ========================================
+   로그인 페이지
+======================================== */
+
+.member-login-button {
+    width: 100%;
+    margin-top: 4px;
+}
+
+.member-auth-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--light-gray);
+}
+
+.member-auth-bottom p {
+    margin: 0;
+    color: var(--gray);
+    font-size: 13px;
+}
+
+.member-auth-bottom a {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+
+
+/* ========================================
+   회원가입 페이지
+======================================== */
+
+.member-form-label {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.member-radio-group {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    min-height: 44px;
+}
+
+.member-radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.member-radio-option input {
+    width: auto;
+    margin: 0;
+    accent-color: var(--black);
+}
+
+.member-form-field input[type="date"] {
+    width: 220px;
+}

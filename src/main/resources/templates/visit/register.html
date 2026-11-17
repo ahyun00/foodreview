@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>방문 인증 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/visit.css}">
+</head>
+
+<body>
+
+    <!-- 공통 헤더 -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <main class="container visit-main">
+
+        <!-- 페이지 제목 -->
+        <section class="visit-heading">
+
+            <p class="eyebrow">VERIFY YOUR VISIT</p>
+
+            <h1>방문을 인증해 주세요.</h1>
+
+            <p>
+                방문 날짜와 영수증을 등록하면
+                관리자 확인 후 리뷰를 작성할 수 있어요.
+            </p>
+
+        </section>
+
+        <!-- 오류 메시지 -->
+        <p class="visit-error"
+           th:if="${error}"
+           th:text="${error}">
+        </p>
+
+        <!-- 방문 인증 신청 -->
+        <form class="visit-form"
+              th:action="@{/visits/register}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <!-- 가게 번호 -->
+            <input type="hidden"
+                   name="pno"
+                   th:value="${pno}">
+
+            <!-- 방문 날짜 -->
+            <div class="visit-form-field">
+
+                <label for="visitDate">방문 날짜</label>
+
+                <input id="visitDate"
+                       type="date"
+                       name="visitDate"
+                       required
+                       th:value="${visit != null ? visit.visitDate : ''}">
+
+                <p class="visit-form-help">
+                    실제 가게를 방문한 날짜를 선택해 주세요.
+                </p>
+
+            </div>
+
+            <!-- 영수증 업로드 -->
+            <div class="visit-form-field">
+
+                <label for="receiptFile">영수증 이미지</label>
+
+                <input id="receiptFile"
+                       type="file"
+                       name="receiptFile"
+                       accept="image/jpeg,image/png,image/webp"
+                       required>
+
+                <p class="visit-form-help">
+                    JPG, PNG, WEBP 파일을 업로드해 주세요.
+                </p>
+
+            </div>
+
+            <!-- 안내 -->
+            <div class="visit-notice">
+
+                <strong>방문 인증 안내</strong>
+
+                <p>
+                    제출한 영수증은 관리자 확인을 거치며,
+                    승인된 방문 내역에 대해서만
+                    리뷰를 작성할 수 있습니다.
+                </p>
+
+            </div>
+
+            <!-- 버튼 -->
+            <div class="visit-form-actions">
+
+                <a class="button-outline"
+                   th:href="@{/places/{pno}(pno=${pno})}">
+                    취소
+                </a>
+
+                <button class="button-primary"
+                        type="submit">
+                    방문 인증 신청
+                </button>
+
+            </div>
+
+        </form>
+
+    </main>
+
+    <!-- 공통 푸터 -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

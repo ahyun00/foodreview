@@ -1,0 +1,277 @@
+
+/* ========================================
+   관리자 메인 페이지
+======================================== */
+
+.admin-main {
+    padding-top: 80px;
+    padding-bottom: 100px;
+}
+
+/* 페이지 제목 */
+
+.admin-heading {
+    margin-bottom: 48px;
+}
+
+.admin-heading h1 {
+    margin: 0 0 16px;
+    font-size: clamp(32px, 4vw, 46px);
+    letter-spacing: -1.5px;
+}
+
+.admin-heading > p:last-child {
+    margin: 0;
+    color: var(--gray);
+}
+
+/* 관리 메뉴 카드 */
+
+.admin-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.admin-menu-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 270px;
+    padding: 36px;
+    border: 1px solid var(--light-gray);
+    border-radius: 10px;
+    background: var(--white);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.admin-menu-card:hover {
+    transform: translateY(-4px);
+    border-color: #aaaaaa;
+    opacity: 1;
+}
+
+.admin-menu-number {
+    color: var(--gray);
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.admin-menu-card h2 {
+    margin: 24px 0 12px;
+    font-size: 23px;
+}
+
+.admin-menu-card p {
+    margin: 0 0 28px;
+    color: var(--gray);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.admin-menu-link {
+    margin-top: auto;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* 메인 돌아가기 */
+
+.admin-bottom {
+    margin-top: 36px;
+}
+
+.admin-bottom a {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* 모바일 */
+
+@media (max-width: 700px) {
+
+    .admin-main {
+        padding-top: 48px;
+        padding-bottom: 64px;
+    }
+
+    .admin-menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-menu-card {
+        min-height: 230px;
+        padding: 26px;
+    }
+
+}
+
+
+
+
+
+/* ========================================
+   관리자 방문 인증 관리
+======================================== */
+
+/* 테이블 */
+
+.admin-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--light-gray);
+    border-radius: 10px;
+}
+
+.admin-table {
+    min-width: 850px;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 18px 16px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.admin-table th {
+    color: var(--gray);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.admin-table-link {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* 상태 */
+
+.admin-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.admin-status.pending {
+    background: #f1f1f1;
+    color: #666666;
+}
+
+.admin-status.approved {
+    background: #e8f4ec;
+    color: #2c7650;
+}
+
+.admin-status.rejected {
+    background: #fcecec;
+    color: #b04545;
+}
+
+/* 승인 / 거절 버튼 */
+
+.admin-action-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-action-group form {
+    margin: 0;
+}
+
+.admin-approve-button,
+.admin-reject-button {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.admin-approve-button {
+    border: 1px solid var(--black);
+    background: var(--black);
+    color: var(--white);
+}
+
+.admin-reject-button {
+    border: 1px solid #cccccc;
+    background: var(--white);
+    color: var(--black);
+}
+
+/* 내역 없음 */
+
+.admin-empty {
+    padding: 70px 20px;
+    border: 1px solid var(--light-gray);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.admin-empty p {
+    margin: 0;
+    color: var(--gray);
+}
+
+/* 모바일 */
+
+@media (max-width: 700px) {
+
+    .admin-table th,
+    .admin-table td {
+        padding: 14px 12px;
+    }
+
+}
+
+
+
+
+
+/* ========================================
+   관리자 회원 관리
+======================================== */
+
+/* 회원 권한 */
+
+.admin-role {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray);
+}
+
+/* 회원 상태 변경 버튼 */
+
+.admin-member-button {
+    padding: 8px 14px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--black);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.admin-member-button:hover {
+    border-color: var(--black);
+}
+
+/* 변경 불가 안내 */
+
+.admin-action-muted {
+    color: var(--gray);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+

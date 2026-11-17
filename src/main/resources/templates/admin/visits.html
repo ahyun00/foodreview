@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>방문 인증 관리 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body>
+
+    <!-- 공통 헤더 -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <main class="container admin-main">
+
+        <!-- 페이지 제목 -->
+        <section class="admin-heading">
+
+            <p class="eyebrow">VISIT MANAGEMENT</p>
+
+            <h1>방문 인증 관리</h1>
+
+            <p>
+                신청된 방문 인증을 검토하고
+                승인하거나 거절할 수 있습니다.
+            </p>
+
+        </section>
+
+        <!-- 승인 대기 내역 없음 -->
+        <div class="admin-empty"
+             th:if="${#lists.isEmpty(visits)}">
+
+            <p>승인 대기 중인 방문 인증이 없습니다.</p>
+
+        </div>
+
+        <!-- 방문 인증 테이블 -->
+        <div class="admin-table-wrap"
+             th:unless="${#lists.isEmpty(visits)}">
+
+            <table class="admin-table">
+
+                <thead>
+                    <tr>
+                        <th>인증번호</th>
+                        <th>회원 닉네임</th>
+                        <th>가게 이름</th>
+                        <th>방문 날짜</th>
+                        <th>영수증</th>
+                        <th>상태</th>
+                        <th>관리</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="visit : ${visits}">
+
+                        <td th:text="${visit.vno}">1</td>
+
+                        <td th:text="${visit.nickname}">
+                            회원 닉네임
+                        </td>
+
+                        <td th:text="${visit.placeName}">
+                            가게 이름
+                        </td>
+
+                        <td th:text="${visit.visitDate}">
+                            방문 날짜
+                        </td>
+
+                        <!-- 영수증 -->
+                        <td>
+
+                            <a class="admin-table-link"
+                               th:href="@{/admin/receipts(fileName=${visit.receipt})}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                영수증 보기 →
+                            </a>
+
+                        </td>
+
+                        <!-- 승인 상태 -->
+                        <td>
+
+                            <span class="admin-status pending"
+                                  th:if="${visit.status == 0}">
+                                승인 대기
+                            </span>
+
+                            <span class="admin-status approved"
+                                  th:if="${visit.status == 1}">
+                                승인 완료
+                            </span>
+
+                            <span class="admin-status rejected"
+                                  th:if="${visit.status == 2}">
+                                거절
+                            </span>
+
+                        </td>
+
+                        <!-- 승인 / 거절 -->
+                        <td>
+
+                            <div class="admin-action-group"
+                                 th:if="${visit.status == 0}">
+
+                                <!-- 승인 -->
+                                <form th:action="@{/admin/visits/approve}"
+                                      method="post"
+                                      onsubmit="return confirm('이 방문 인증을 승인하시겠습니까?');">
+
+                                    <input type="hidden"
+                                           name="vno"
+                                           th:value="${visit.vno}">
+
+                                    <button class="admin-approve-button"
+                                            type="submit">
+                                        승인
+                                    </button>
+
+                                </form>
+
+                                <!-- 거절 -->
+                                <form th:action="@{/admin/visits/reject}"
+                                      method="post"
+                                      onsubmit="return confirm('이 방문 인증을 거절하시겠습니까?');">
+
+                                    <input type="hidden"
+                                           name="vno"
+                                           th:value="${visit.vno}">
+
+                                    <button class="admin-reject-button"
+                                            type="submit">
+                                        거절
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- 관리자 메인 돌아가기 -->
+        <div class="admin-bottom">
+
+            <a th:href="@{/admin}">
+                ← 관리자 메인으로
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- 공통 푸터 -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <!-- 승인 / 거절 처리 결과 -->
+    <script th:if="${message}" th:inline="javascript">
+        const message = /*[[${message}]]*/ "";
+        alert(message);
+    </script>
+
+</body>
+</html>

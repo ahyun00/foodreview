@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>마이페이지 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/member.css}">
+</head>
+
+<body>
+
+    <!-- 공통 헤더 -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <main class="container mypage-main">
+
+        <!-- 페이지 제목 -->
+        <section class="mypage-heading">
+
+            <p class="eyebrow">MY PAGE</p>
+
+            <h1>마이페이지</h1>
+
+            <p>내 정보와 방문 인증 내역을 확인해 보세요.</p>
+
+        </section>
+
+        <!-- 회원정보 -->
+        <section class="mypage-section">
+
+            <div class="mypage-section-heading">
+
+                <h2>내 정보</h2>
+
+                <a class="button-outline"
+                   th:href="@{/mypage/edit}">
+                    회원정보 수정
+                </a>
+
+            </div>
+
+            <div class="mypage-profile">
+
+                <div class="mypage-profile-item">
+                    <span>이름</span>
+                    <p th:text="${member.name}">이름</p>
+                </div>
+
+                <div class="mypage-profile-item">
+                    <span>이메일</span>
+                    <p th:text="${member.email}">이메일</p>
+                </div>
+
+                <div class="mypage-profile-item">
+                    <span>닉네임</span>
+                    <p th:text="${member.nickname}">닉네임</p>
+                </div>
+
+                <div class="mypage-profile-item">
+                    <span>성별</span>
+                    <p th:text="${member.gender}">성별</p>
+                </div>
+
+                <div class="mypage-profile-item">
+                    <span>생년월일</span>
+                    <p th:text="${member.birth}">생년월일</p>
+                </div>
+
+                <div class="mypage-profile-item">
+                    <span>전화번호</span>
+                    <p th:text="${member.phone}">전화번호</p>
+                </div>
+
+                <div class="mypage-profile-item">
+                    <span>가입일</span>
+                    <p th:text="${member.joinDate}">가입일</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- 방문 인증 내역 -->
+        <section class="mypage-section">
+
+            <div class="mypage-section-heading">
+
+                <h2>내 방문 인증 내역</h2>
+
+                <a class="button-primary"
+                   th:href="@{/places}">
+                    방문 인증 신청
+                </a>
+
+            </div>
+
+            <!-- 내역 없음 -->
+            <div class="mypage-empty"
+                 th:if="${#lists.isEmpty(myVisits)}">
+
+                <p>아직 신청한 방문 인증이 없습니다.</p>
+
+                <a th:href="@{/places}">
+                    맛집 둘러보기 →
+                </a>
+
+            </div>
+
+            <!-- 방문 인증 테이블 -->
+            <div class="mypage-table-wrap"
+                 th:unless="${#lists.isEmpty(myVisits)}">
+
+                <table class="mypage-table">
+
+                    <thead>
+                        <tr>
+                            <th>인증번호</th>
+                            <th>가게 이름</th>
+                            <th>방문 날짜</th>
+                            <th>승인 상태</th>
+                            <th>리뷰</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="visit : ${myVisits}">
+
+                            <td th:text="${visit.vno}">1</td>
+
+                            <td th:text="${visit.placeName}">
+                                가게 이름
+                            </td>
+
+                            <td th:text="${visit.visitDate}">
+                                방문 날짜
+                            </td>
+
+                            <!-- 승인 상태 -->
+                            <td>
+
+                                <span class="mypage-status pending"
+                                      th:if="${visit.status == 0}">
+                                    승인 대기
+                                </span>
+
+                                <span class="mypage-status approved"
+                                      th:if="${visit.status == 1}">
+                                    승인 완료
+                                </span>
+
+                                <span class="mypage-status rejected"
+                                      th:if="${visit.status == 2}">
+                                    거절
+                                </span>
+
+                            </td>
+
+                            <!-- 리뷰 작성 및 조회 -->
+                            <td>
+
+                                <a class="mypage-action-link"
+                                   th:if="${visit.status == 1 and visit.rno == null}"
+                                   th:href="@{/reviews/write(vno=${visit.vno})}">
+                                    리뷰 작성하기 →
+                                </a>
+
+                                <a class="mypage-action-link"
+                                   th:if="${visit.status == 1 and visit.rno != null}"
+                                   th:href="@{/reviews/{rno}(rno=${visit.rno})}">
+                                    작성한 리뷰 보기 →
+                                </a>
+
+                                <span class="mypage-action-muted"
+                                      th:if="${visit.status == 0}">
+                                    승인 대기
+                                </span>
+
+                                <span class="mypage-action-muted"
+                                      th:if="${visit.status == 2}">
+                                    작성 불가
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- 하단 링크 -->
+        <div class="mypage-bottom">
+
+            <a th:href="@{/reviews}">
+                전체 리뷰 보기 →
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- 공통 푸터 -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

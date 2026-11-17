@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FoodReview | 믿을 수 있는 맛집 리뷰</title>
+
+	
+	<link rel="stylesheet" th:href="@{/css/reset.css}">
+	<link rel="stylesheet" th:href="@{/css/common.css}">
+	<link rel="stylesheet" th:href="@{/css/home.css}">
+	<link rel="stylesheet" th:href="@{/css/place.css}">
+
+</head>
+
+<body>
+	
+	<header th:replace="~{fragments/layout :: header}"></header>
+
+    <main>
+
+        <!-- 메인 소개 영역 -->
+        <section class="hero">
+            <div class="container">
+
+                <p class="eyebrow">
+                    REAL VISITS. REAL REVIEWS.
+                </p>
+
+                <h1>
+                    맛집의 발견,<br>
+                    <span>신뢰의 시작.</span>
+                </h1>
+
+                <p class="hero-description">
+                    직접 방문한 사람들의 경험을 만나보세요.<br>
+                    방문 인증을 기반으로 더 믿을 수 있는 리뷰.
+                </p>
+
+                <div class="button-group">
+                    <a class="button-primary"
+                       th:href="@{/places}">
+                        맛집 둘러보기
+                    </a>
+
+                    <a class="button-outline"
+                       th:href="@{/reviews}">
+                        리뷰 살펴보기
+                    </a>
+                </div>
+
+            </div>
+        </section>
+		
+		
+		<!-- 메인 가게 목록 -->
+		<section class="section">
+		    <div class="container">
+
+		        <p class="eyebrow">DISCOVER PLACES</p>
+
+		        <h2 class="section-title">
+		            새로운 맛집을 만나보세요.
+		        </h2>
+
+		        <!-- 등록된 가게가 없는 경우 -->
+		        <p th:if="${#lists.isEmpty(homePlaces)}">
+		            아직 등록된 가게가 없습니다.
+		        </p>
+
+		        <!-- 가게 카드 목록 -->
+		        <div class="place-grid"
+		             th:unless="${#lists.isEmpty(homePlaces)}">
+
+		            <a class="place-card"
+		               th:each="place : ${homePlaces}"
+		               th:href="@{/places/{pno}(pno=${place.pno})}">
+					
+					   
+					   <!-- 가게 이미지 영역 -->
+					   <div class="place-card-image">
+
+					       <!-- 이미지가 등록된 경우 -->
+					       <img th:if="${place.placeImage != null and !place.placeImage.isEmpty()}"
+					            th:src="@{/images/places/{file}(file=${place.placeImage})}"
+					            th:alt="${place.name}">
+
+					       <!-- 이미지가 없는 경우 -->
+					       <div class="place-image-placeholder"
+					            th:unless="${place.placeImage != null and !place.placeImage.isEmpty()}">
+					           NO IMAGE
+					       </div>
+
+					   </div>
+      
+
+		                <div class="place-card-body">
+
+		                    <span class="place-category"
+		                          th:text="${place.category}">
+		                        카테고리
+		                    </span>
+
+		                    <h3 th:text="${place.name}">
+		                        가게 이름
+		                    </h3>
+
+		                    <p th:text="${place.address}">
+		                        가게 주소
+		                    </p>
+
+		                    <span class="place-more">
+		                        가게 자세히 보기
+		                    </span>
+
+		                </div>
+
+		            </a>
+
+		        </div>
+
+		        <div class="place-list-link">
+		            <a class="button-outline"
+		               th:href="@{/places}">
+		                모든 가게 보기
+		            </a>
+		        </div>
+
+		    </div>
+		</section>
+
+		
+		
+		<!-- 최신 방문 인증 리뷰 -->
+		<section class="section home-reviews">
+
+		    <div class="container">
+
+		        <div class="home-review-heading">
+
+		            <div>
+		                <p class="eyebrow">
+		                    VERIFIED REVIEWS
+		                </p>
+
+		                <h2 class="section-title">
+		                    직접 방문한 사람들의 이야기.
+		                </h2>
+		            </div>
+
+		            <a class="home-review-more"
+		               th:href="@{/reviews}">
+		                전체 리뷰 보기 →
+		            </a>
+
+		        </div>
+
+		        <!-- 리뷰가 없을 때 -->
+		        <p th:if="${#lists.isEmpty(homeReviews)}">
+		            아직 등록된 리뷰가 없습니다.
+		        </p>
+
+		        <!-- 최신 리뷰 카드 -->
+		        <div class="home-review-grid"
+		             th:unless="${#lists.isEmpty(homeReviews)}">
+
+		            <a class="home-review-card"
+		               th:each="review : ${homeReviews}"
+		               th:href="@{/reviews/{rno}(rno=${review.rno})}">
+
+		                <span class="home-review-label">
+		                    VERIFIED REVIEW
+		                </span>
+
+		                <h3 th:text="${review.placeName}">
+		                    가게 이름
+		                </h3>
+
+		                <div class="home-review-meta">
+
+		                    <span class="home-review-stars">
+		                        <span th:each="star : ${#numbers.sequence(1, 5)}"
+		                              th:text="${star <= review.rating ? '★' : '☆'}">
+		                        </span>
+		                    </span>
+
+		                    <span th:text="${review.nickname}">
+		                        작성자
+		                    </span>
+
+		                </div>
+
+		                <p class="home-review-content"
+		                   th:text="${review.content}">
+		                    리뷰 내용
+		                </p>
+
+		                <span class="home-review-link">
+		                    리뷰 자세히 보기 →
+		                </span>
+
+		            </a>
+
+		        </div>
+
+		    </div>
+
+		</section>
+
+
+
+        <!-- 서비스 핵심 기능 -->
+        <section class="section section-muted">
+            <div class="container">
+
+                <p class="eyebrow">HOW IT WORKS</p>
+
+                <h2 class="section-title">
+                    믿을 수 있는 리뷰가 만들어지는 과정
+                </h2>
+
+                <div class="card-grid">
+
+                    <div class="card">
+                        <span class="card-number">01 / VISIT</span>
+                        <h3>맛집 방문</h3>
+                        <p>
+                            원하는 가게를 찾고<br>
+                            직접 방문한 경험을 쌓아보세요.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-number">02 / VERIFY</span>
+                        <h3>방문 인증</h3>
+                        <p>
+                            영수증을 등록하고<br>
+                            관리자의 방문 인증 승인을 받아요.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-number">03 / REVIEW</span>
+                        <h3>리뷰 작성</h3>
+                        <p>
+                            승인된 방문을 바탕으로<br>
+                            솔직한 리뷰를 공유해 보세요.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 리뷰 탐색 안내 -->
+        <section class="section">
+            <div class="container">
+
+                <p class="eyebrow">DISCOVER MORE</p>
+
+                <h2 class="section-title">
+                    새로운 맛집을 발견해 보세요.
+                </h2>
+
+                <p class="hero-description">
+                    가게를 검색하고 실제 방문자의 리뷰를 확인할 수 있어요.
+                </p>
+
+                <a class="button-primary"
+                   th:href="@{/places}">
+                    전체 가게 보기
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- 하단 영역 -->
+	<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

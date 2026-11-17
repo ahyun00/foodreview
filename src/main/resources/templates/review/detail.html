@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>리뷰 상세 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/review.css}">
+</head>
+
+<body>
+
+	
+	<!-- 공통 헤더 -->
+	<header th:replace="~{fragments/layout :: header}"></header>
+
+
+    <main class="container review-detail-main">
+
+        <!-- 리뷰 제목 -->
+        <section class="review-detail-heading">
+
+            <p class="eyebrow">VERIFIED REVIEW</p>
+
+            <h1 th:text="${review.placeName}">
+                가게 이름
+            </h1>
+
+            <div class="review-meta">
+
+                <span class="review-stars">
+                    <span th:each="star : ${#numbers.sequence(1, 5)}"
+                          th:text="${star <= review.rating ? '★' : '☆'}">
+                    </span>
+                </span>
+
+                <span class="review-author"
+                      th:text="${review.nickname}">
+                    작성자
+                </span>
+
+                <span class="review-date"
+                      th:text="${review.regDate}">
+                    작성일
+                </span>
+
+            </div>
+
+        </section>
+
+        <!-- 리뷰 본문 -->
+        <section class="review-detail-body">
+
+            <p class="review-detail-content"
+               th:text="${review.content}">
+                리뷰 내용
+            </p>
+
+            <!-- 리뷰 이미지 -->
+            <div class="review-detail-image"
+                 th:if="${review.reviewImage != null}">
+
+                <img th:src="@{/review-images/{savedName}(savedName=${review.reviewImage})}"
+                     alt="리뷰 이미지">
+
+            </div>
+
+        </section>
+
+        <!-- 하단 버튼 -->
+        <div class="review-detail-actions">
+
+            <a class="review-back-link"
+               th:href="@{/reviews}">
+                ← 리뷰 목록으로
+            </a>
+
+            <!-- 작성자에게만 표시 -->
+            <div class="review-owner-actions"
+                 th:if="${canEdit}">
+
+                <a class="button-outline"
+                   th:href="@{/reviews/{rno}/edit(rno=${review.rno})}">
+                    수정
+                </a>
+
+                <form th:action="@{/reviews/{rno}/delete(rno=${review.rno})}"
+                      method="post"
+                      onsubmit="return confirm('정말 이 리뷰를 삭제하시겠습니까?');">
+
+                    <button class="button-primary"
+                            type="submit">
+                        삭제
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </main>
+
+	
+	<!-- 공통 푸터 -->
+	<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+
+</body>
+</html>

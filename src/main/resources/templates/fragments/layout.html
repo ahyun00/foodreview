@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <!-- 공통 헤더 -->
+    <header class="site-header" th:fragment="header">
+
+        <div class="container header-inner">
+
+            <a class="logo" th:href="@{/}">
+                foodreview<span>.</span>
+            </a>
+
+            <nav class="nav-links">
+
+                <a th:href="@{/places}">맛집 탐색</a>
+
+                <a th:href="@{/reviews}">리뷰</a>
+
+                <!-- 비로그인 -->
+                <th:block th:if="${session.member == null}">
+
+                    <a th:href="@{/login}">로그인</a>
+
+                    <a th:href="@{/register}">회원가입</a>
+
+                </th:block>
+
+                <!-- 로그인 -->
+                <th:block th:if="${session.member != null}">
+
+                    <a th:href="@{/mypage}">마이페이지</a>
+
+                    <a th:if="${session.member.role == 'ADMIN'}"
+                       th:href="@{/admin}">
+                        관리자
+                    </a>
+
+                    <a th:href="@{/logout}">로그아웃</a>
+
+                </th:block>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+	
+	<!-- 공통 푸터 -->
+	<footer class="site-footer" th:fragment="footer">
+
+	    <div class="container">
+
+	        <div class="footer-top">
+
+	            <div>
+	                <a class="logo" th:href="@{/}">
+	                    foodreview<span>.</span>
+	                </a>
+
+	                <p>Real visits. Real reviews.</p>
+	            </div>
+
+	            <nav class="footer-links">
+	                <a th:href="@{/places}">맛집 탐색</a>
+	                <a th:href="@{/reviews}">리뷰</a>
+	            </nav>
+
+	        </div>
+
+	        <div class="footer-bottom">
+	            © 2026 FoodReview. Personal portfolio project.
+	        </div>
+
+	    </div>
+
+	</footer>
+
+
+</body>
+</html>

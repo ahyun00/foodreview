@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>회원가입 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/member.css}">
+</head>
+
+<body>
+
+    <!-- 공통 헤더 -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <main class="container member-form-main">
+
+        <!-- 페이지 제목 -->
+        <section class="member-form-heading">
+
+            <p class="eyebrow">JOIN FOODREVIEW</p>
+
+            <h1>회원가입</h1>
+
+            <p>FoodReview에 가입하고 방문 경험을 공유해 보세요.</p>
+
+        </section>
+
+		
+		<!-- 회원가입 오류 메시지 -->
+		<p class="member-form-error"
+		   th:if="${error}"
+		   th:text="${error}">
+		</p>
+
+        <!-- 회원가입 폼 -->
+        <form class="member-form"
+              th:action="@{/register}"
+              method="post">
+
+            <!-- 이름 -->
+            <div class="member-form-field">
+
+                <label for="name">이름</label>
+
+                <input id="name"
+                       type="text"
+                       name="name"
+					   th:value="${member != null ? member.name : ''}"
+                       placeholder="이름을 입력해 주세요"
+                       autocomplete="name"
+                       required>
+
+            </div>
+
+            <!-- 이메일 -->
+            <div class="member-form-field">
+
+                <label for="email">이메일</label>
+
+                <input id="email"
+                       type="email"
+                       name="email"
+					   th:value="${member !=null ? member.email : ''}"
+                       placeholder="이메일을 입력해 주세요"
+                       autocomplete="email"
+                       required>
+
+            </div>
+
+            <!-- 비밀번호 -->
+            <div class="member-form-field">
+
+                <label for="pwd">비밀번호</label>
+
+                <input id="pwd"
+                       type="password"
+                       name="pwd"
+                       placeholder="비밀번호를 입력해 주세요"
+                       autocomplete="new-password"
+                       required>
+
+            </div>
+
+            <!-- 닉네임 -->
+            <div class="member-form-field">
+
+                <label for="nickname">닉네임</label>
+
+                <input id="nickname"
+                       type="text"
+                       name="nickname"
+					   th:value="${member != null ? member.nickname : ''}"
+                       placeholder="닉네임을 입력해 주세요"
+                       required>
+
+            </div>
+
+            <!-- 성별 -->
+            <div class="member-form-field">
+
+                <span class="member-form-label">성별</span>
+
+                <div class="member-radio-group">
+
+                    <label class="member-radio-option">
+                        <input type="radio"
+                               name="gender" 
+							   th:checked="${member != null and member.gender == 'M'}"
+                               value="M"
+                               required>
+                        남성
+                    </label>
+
+                    <label class="member-radio-option">
+                        <input type="radio"
+                               name="gender"
+							   th:checked="${member != null and member.gender == 'F'}"
+                               value="F">
+                        여성
+                    </label>
+
+                </div>
+
+            </div>
+
+            <!-- 생년월일 -->
+            <div class="member-form-field">
+
+                <label for="birth">생년월일</label>
+
+                <input id="birth"
+                       type="date"
+                       name="birth"
+					   th:value="${member != null ? member.birth : ''}"
+                       required>
+
+            </div>
+
+            <!-- 전화번호 -->
+            <div class="member-form-field">
+
+                <label for="phone">전화번호</label>
+
+                <input id="phone"
+                       type="tel"
+                       name="phone"
+					   th:value="${member != null ? member.phone : ''}"
+                       placeholder="전화번호를 입력해 주세요"
+                       autocomplete="tel"
+                       required>
+
+            </div>
+
+            <!-- 가입 버튼 -->
+            <button class="button-primary member-login-button"
+                    type="submit">
+                회원가입
+            </button>
+
+        </form>
+
+        <!-- 로그인 안내 -->
+        <div class="member-auth-bottom">
+
+            <p>이미 회원이신가요?</p>
+
+            <a th:href="@{/login}">
+                로그인 →
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- 공통 푸터 -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

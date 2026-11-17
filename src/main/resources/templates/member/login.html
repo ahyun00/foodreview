@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>로그인 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/member.css}">
+</head>
+
+<body>
+
+    <!-- 공통 헤더 -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <main class="container member-form-main">
+
+        <!-- 페이지 제목 -->
+        <section class="member-form-heading">
+
+            <p class="eyebrow">WELCOME BACK</p>
+
+            <h1>로그인</h1>
+
+            <p>FoodReview에서 방문자의 리뷰를 확인해 보세요.</p>
+
+        </section>
+
+        <!-- 로그인 폼 -->
+        <form class="member-form"
+              th:action="@{/login}"
+              method="post">
+
+            <!-- 이메일 -->
+            <div class="member-form-field">
+
+                <label for="email">이메일</label>
+
+                <input id="email"
+                       type="email"
+                       name="email"
+                       placeholder="이메일을 입력해 주세요"
+                       autocomplete="email"
+                       required>
+
+            </div>
+
+            <!-- 비밀번호 -->
+            <div class="member-form-field">
+
+                <label for="pwd">비밀번호</label>
+
+                <input id="pwd"
+                       type="password"
+                       name="pwd"
+                       placeholder="비밀번호를 입력해 주세요"
+                       autocomplete="current-password"
+                       required>
+
+            </div>
+
+            <!-- 로그인 오류 -->
+            <p class="member-form-error"
+               th:if="${error}"
+               th:text="${error}">
+            </p>
+
+            <!-- 로그인 버튼 -->
+            <button class="button-primary member-login-button"
+                    type="submit">
+                로그인
+            </button>
+
+        </form>
+
+        <!-- 회원가입 안내 -->
+        <div class="member-auth-bottom">
+
+            <p>아직 회원이 아니신가요?</p>
+
+            <a th:href="@{/register}">
+                회원가입 →
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- 공통 푸터 -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

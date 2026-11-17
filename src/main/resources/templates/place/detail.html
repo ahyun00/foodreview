@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>가게 상세 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/place.css}">
+</head>
+
+<body>
+
+    <!-- 공통 헤더 -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <main class="container place-detail-main">
+
+        <!-- 가게 제목 -->
+        <section class="place-detail-heading">
+
+            <p class="eyebrow">PLACE DETAILS</p>
+
+            <span class="place-category"
+                  th:text="${place.category}">
+                카테고리
+            </span>
+
+            <h1 th:text="${place.name}">
+                가게 이름
+            </h1>
+
+        </section>
+
+        <!-- 가게 대표 이미지 -->
+        <div class="place-detail-image">
+
+            <img th:if="${place.placeImage != null and !place.placeImage.isEmpty()}"
+                 th:src="@{/images/places/{file}(file=${place.placeImage})}"
+                 th:alt="${place.name}">
+
+            <div class="place-image-placeholder"
+                 th:unless="${place.placeImage != null and !place.placeImage.isEmpty()}">
+                NO IMAGE
+            </div>
+
+        </div>
+
+        <!-- 가게 정보 -->
+        <section class="place-detail-info">
+
+            <h2>가게 정보</h2>
+
+            <div class="place-info-grid">
+
+                <div class="place-info-item">
+
+                    <span class="place-info-label">주소</span>
+
+                    <p th:text="${place.address}">
+                        주소
+                    </p>
+
+                </div>
+
+                <div class="place-info-item">
+
+                    <span class="place-info-label">전화번호</span>
+
+                    <p th:text="${place.phone}">
+                        전화번호
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- 가게 설명 -->
+            <div class="place-detail-description">
+
+                <h3>소개</h3>
+
+                <p th:text="${place.description}">
+                    가게 설명
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- 하단 버튼 -->
+        <div class="place-detail-actions">
+
+            <a class="place-back-link"
+               th:href="@{/places}">
+                ← 가게 목록으로
+            </a>
+
+            <a class="button-primary"
+               th:href="@{/visits/register(pno=${place.pno})}">
+                방문 인증하기
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- 공통 푸터 -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

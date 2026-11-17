@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>리뷰 작성 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/review.css}">
+</head>
+
+<body>
+
+	
+	<!-- 공통 헤더 -->
+	<header th:replace="~{fragments/layout :: header}"></header>
+
+
+    <main class="container review-form-main">
+
+        <section class="review-form-heading">
+
+            <p class="eyebrow">WRITE A REVIEW</p>
+
+            <h1>방문 경험을 남겨주세요.</h1>
+
+            <p>
+                실제 방문 경험을 바탕으로
+                솔직한 리뷰를 작성해 주세요.
+            </p>
+
+        </section>
+
+        <!-- 오류 메시지 -->
+        <p class="review-form-error"
+           th:if="${error}"
+           th:text="${error}">
+        </p>
+
+        <!-- 리뷰 작성 -->
+        <form class="review-form"
+              th:action="@{/reviews/write}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <!-- 방문 인증번호 -->
+            <input type="hidden"
+                   name="vno"
+                   th:value="${vno}">
+
+            <!-- 별점 -->
+            <div class="review-form-field">
+
+                <label for="rating">별점</label>
+
+                <input id="rating"
+                       type="number"
+                       name="rating"
+                       min="1"
+                       max="5"
+                       required
+                       th:value="${review != null ? review.rating : ''}">
+
+                <p class="review-form-help">
+                    1점부터 5점까지 입력해 주세요.
+                </p>
+
+            </div>
+
+            <!-- 리뷰 내용 -->
+            <div class="review-form-field">
+
+                <label for="content">리뷰 내용</label>
+
+                <textarea id="content"
+                          name="content"
+                          rows="7"
+                          required
+                          placeholder="음식, 분위기, 서비스 등 방문 경험을 작성해 주세요."
+                          th:text="${review != null ? review.content : ''}">
+                </textarea>
+
+            </div>
+
+            <!-- 리뷰 이미지 -->
+            <div class="review-form-field">
+
+                <label for="reviewFile">리뷰 이미지</label>
+
+                <input id="reviewFile"
+                       type="file"
+                       name="reviewFile"
+                       accept=".jpg,.png,.webp">
+
+                <p class="review-form-help">
+                    JPG, PNG, WEBP · 최대 5MB (선택)
+                </p>
+
+            </div>
+
+            <!-- 버튼 -->
+            <div class="review-form-actions">
+
+                <a class="button-outline"
+                   th:href="@{/mypage}">
+                    취소
+                </a>
+
+                <button class="button-primary"
+                        type="submit">
+                    리뷰 등록
+                </button>
+
+            </div>
+
+        </form>
+
+    </main>
+
+	
+	<!-- 공통 푸터 -->
+	<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+
+</body>
+</html>

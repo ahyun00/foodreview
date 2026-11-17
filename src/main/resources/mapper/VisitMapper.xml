@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace= "org.foodreview.visit.VisitMapper">
+
+
+	<!-- 방문 인증 등록 -->
+	<insert id= "insertVisit">
+		insert into visit (
+			mno
+			, pno
+			, visit_date
+			, receipt
+			, status
+			, reg_date
+		) values (
+			#{visit.mno}
+			, #{visit.pno}
+			, #{visit.visitDate}
+			, #{visit.receipt}
+			, 0
+			, now()
+		)
+	</insert>
+
+	<!-- 승인된 방문 인증 조회 -->
+	<select id= "findApprovedVisit" resultType="org.foodreview.visit.Visit">
+		select * from visit
+		where vno = #{vno}
+			and mno = #{mno}
+			and status = 1
+	</select>
+	
+	<!-- 로그인한 회원의 방문 인증 목록 + 리뷰 작성 여부 조회 -->
+	<select id= "findMyVisits" resultType="org.foodreview.visit.Visit">
+		select 
+			v.*,
+			r.rno,
+			p.name as place_name
+		from visit v
+		join place p
+			on v.pno=p.pno
+		left join review r
+				on v.vno = r.vno
+		where v.mno= #{mno}
+		order by v.reg_date desc
+	</select>
+	
+	
+
+	<!-- 관리자 : 승인 대기 중인 방문 인증 목록 -->
+	<select id= "findPendingVisits" resultType= "org.foodreview.admin.AdminVisitDTO">
+		select
+			v.vno,
+			m.nickname,
+			p.name AS placeName,
+			v.visit_date,
+			v.receipt,
+			v.status,
+			v.reg_date
+		from visit v
+		join member m on v.mno = m.mno
+		join place p on p.pno = v.pno
+		where v.status = 0
+		order by v.reg_date desc	
+	</select>
+
+	<!-- 관리자 : 방문 인증 승인 -->
+	<update id= "approveVisit">
+	update visit
+	set status = 1
+	where vno = #{vno} and status = 0
+	</update>
+	
+	<!-- 관리자 : 방문 인증 거절 -->
+	<update id= "rejectVisit">
+	update visit
+	set status = 2
+	where vno = #{vno} and status =0
+	</update>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

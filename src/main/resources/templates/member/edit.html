@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>회원정보 수정 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/member.css}">
+</head>
+
+<body>
+
+    <!-- 공통 헤더 -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <main class="container member-form-main">
+
+        <!-- 페이지 제목 -->
+        <section class="member-form-heading">
+
+            <p class="eyebrow">EDIT PROFILE</p>
+
+            <h1>회원정보 수정</h1>
+
+            <p>내 정보를 최신 상태로 관리해 보세요.</p>
+
+        </section>
+
+        <!-- 오류 메시지 -->
+        <p class="member-form-error"
+           th:if="${error != null}"
+           th:text="${error}">
+        </p>
+
+        <!-- 회원정보 수정 폼 -->
+        <form class="member-form"
+              th:action="@{/mypage/edit}"
+              method="post">
+
+            <!-- 이름 -->
+            <div class="member-form-field">
+
+                <label for="name">이름</label>
+
+                <input id="name"
+                       type="text"
+                       name="name"
+                       th:value="${member.name}"
+                       autocomplete="name"
+                       required>
+
+            </div>
+
+            <!-- 닉네임 -->
+            <div class="member-form-field">
+
+                <label for="nickname">닉네임</label>
+
+                <input id="nickname"
+                       type="text"
+                       name="nickname"
+                       th:value="${member.nickname}"
+                       required>
+
+            </div>
+
+            <!-- 전화번호 -->
+            <div class="member-form-field">
+
+                <label for="phone">전화번호</label>
+
+                <input id="phone"
+                       type="text"
+                       name="phone"
+                       th:value="${member.phone}"
+                       autocomplete="tel"
+                       required>
+
+            </div>
+
+            <!-- 하단 버튼 -->
+            <div class="member-form-actions">
+
+                <a class="button-outline"
+                   th:href="@{/mypage}">
+                    취소
+                </a>
+
+                <button class="button-primary"
+                        type="submit">
+                    수정 완료
+                </button>
+
+            </div>
+
+        </form>
+
+    </main>
+
+    <!-- 공통 푸터 -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

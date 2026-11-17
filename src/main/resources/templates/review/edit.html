@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>리뷰 수정 | FoodReview</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/review.css}">
+</head>
+
+<body>
+
+	
+	<!-- 공통 헤더 -->
+	<header th:replace="~{fragments/layout :: header}"></header>
+
+
+    <main class="container review-form-main">
+
+        <section class="review-form-heading">
+
+            <p class="eyebrow">EDIT YOUR REVIEW</p>
+
+            <h1>리뷰 수정</h1>
+
+            <p>작성한 방문 경험을 수정할 수 있어요.</p>
+
+        </section>
+
+        <!-- 오류 메시지 -->
+        <p class="review-form-error"
+           th:if="${error}"
+           th:text="${error}">
+        </p>
+
+        <!-- 리뷰 수정 -->
+        <form class="review-form"
+              th:action="@{/reviews/{rno}/edit(rno=${review.rno})}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <!-- 별점 -->
+            <div class="review-form-field">
+
+                <label for="rating">별점</label>
+
+                <input id="rating"
+                       type="number"
+                       name="rating"
+                       min="1"
+                       max="5"
+                       required
+                       th:value="${review.rating}">
+
+                <p class="review-form-help">
+                    1점부터 5점까지 입력해 주세요.
+                </p>
+
+            </div>
+
+            <!-- 리뷰 내용 -->
+            <div class="review-form-field">
+
+                <label for="content">리뷰 내용</label>
+
+                <textarea id="content"
+                          name="content"
+                          rows="7"
+                          required
+                          th:text="${review.content}">
+                </textarea>
+
+            </div>
+
+            <!-- 기존 이미지 -->
+            <div class="review-form-field"
+                 th:if="${review.reviewImage != null}">
+
+                <label>현재 등록된 이미지</label>
+
+                <div class="review-form-preview">
+
+                    <img th:src="@{/review-images/{savedName}(savedName=${review.reviewImage})}"
+                         alt="기존 리뷰 이미지">
+
+                </div>
+
+            </div>
+
+            <!-- 새 이미지 선택 -->
+            <div class="review-form-field">
+
+                <label for="reviewFile">리뷰 이미지 변경</label>
+
+                <input id="reviewFile"
+                       type="file"
+                       name="reviewFile"
+                       accept=".jpg,.png,.webp">
+
+                <p class="review-form-help">
+                    새 이미지를 선택하지 않으면
+                    기존 이미지가 유지됩니다.
+                    JPG, PNG, WEBP · 최대 5MB
+                </p>
+
+            </div>
+
+            <!-- 버튼 -->
+            <div class="review-form-actions">
+
+                <a class="button-outline"
+                   th:href="@{/reviews/{rno}(rno=${review.rno})}">
+                    취소
+                </a>
+
+                <button class="button-primary"
+                        type="submit">
+                    수정 완료
+                </button>
+
+            </div>
+
+        </form>
+
+    </main>
+
+	
+	<!-- 공통 푸터 -->
+	<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+
+</body>
+</html>

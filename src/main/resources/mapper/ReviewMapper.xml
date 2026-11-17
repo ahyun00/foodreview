@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+  <mapper namespace= "org.foodreview.review.ReviewMapper">
+  	
+  	
+  	<!-- 리뷰 등록 -->
+  	<insert id= "insertReview">
+  		insert into review(
+			vno,
+			rating,
+			content,
+			review_image,
+			reg_date
+		) values (
+			#{review.vno},
+			#{review.rating},
+			#{review.content},
+			#{review.reviewImage},
+			now()
+		)
+  	
+  	</insert>
+  
+  	<!-- 리뷰 목록 조회 -->
+  	<select id="findAll" resultType= "org.foodreview.review.Review">
+  		select 
+			r.rno,
+			r.vno,
+			r.rating,
+			r.content,
+			r.review_image,
+			r.reg_date,
+			m.nickname,
+			p.name as place_name
+		from review r
+		join visit v on r.vno = v.vno
+		join member m on m.mno = v.mno
+		join place p on p.pno = v.pno
+		order by r.rno desc
+  	</select>
+  	
+  	<!-- 리뷰 상세 조회 -->
+  	<select id= "findByRno" resultType= "org.foodreview.review.Review">
+  		select 
+			r.rno,
+			r.vno,
+			r.rating,
+			r.content,
+			r.review_image,
+			r.reg_date,
+			m.nickname,
+			p.name as place_name
+		from review r
+		join visit v on r.vno = v.vno
+		join member m on m.mno = v.mno
+		join place p on p.pno = v.pno
+		where r.rno = #{rno}
+  	</select>
+  	
+  	<!-- 리뷰 수정 -->
+  	<update id="updateReview">
+  		update review
+  		set
+  			rating = #{review.rating},
+  			content = #{review.content},
+  			review_image = #{review.reviewImage}
+  		where rno = #{review.rno}	
+  	</update>
+  	
+  	<!-- 리뷰 삭제 -->
+  	<delete id= "deleteReview">
+  		delete from review
+  		where rno = #{rno}
+  	</delete>
+
+	<!-- 특정 방문 인증에 작성된 리뷰 개수 조회 -->
+	<select id="countByVno" resultType= "int">
+		select count(*)
+		from review
+		where vno= #{vno}
+	</select>
+	
+	<!-- 리뷰 페이징 조회 -->
+    <select id="findByPage" resultType="org.foodreview.review.Review">
+  		SELECT
+		    r.rno,
+		    r.vno,
+		    r.rating,
+		    r.content,
+		    r.review_image,
+		    r.reg_date,
+		    m.nickname,
+		    p.name AS place_name
+		FROM review r
+		JOIN visit v ON r.vno = v.vno
+		JOIN member m ON m.mno = v.mno
+		JOIN place p ON p.pno = v.pno
+		ORDER BY r.rno DESC
+		LIMIT #{size} OFFSET #{offset}
+    </select>
+    
+    <!-- 전체 리뷰 개수 조회 -->
+    <select id= "countAll" resultType = "int">
+    	select	count(*)
+    	from		review
+    </select>
+    
+    <!-- 메인 페이지 최신 승인 리뷰 3개 -->
+    <select id= "findRecentApprovedReviews"
+    			resultType= "org.foodreview.review.Review">
+    
+    	SELECT
+    			r.rno,
+    			r.rating,
+    			r.content,
+    			r.reg_date,
+    			m.nickname,
+    			p.name AS place_name
+		FROM review r
+		JOIN visit v ON v.vno = r.vno
+		JOIN member m ON m.mno = v.mno
+		JOIN place p ON p.pno = v.pno
+		WHERE v.status = 1
+		ORDER BY r.rno DESC, r.reg_date DESC
+		LIMIT 3
+    			
+    </select>
+  
+
+  
+  
+  
+  
+  </mapper>
