@@ -174,11 +174,125 @@ public class ReviewControllerTest {
 		        "이미 리뷰가 등록된 방문입니다.",
 		        model.getAttribute("error")
 		);
-		
-		
 	}
 
+	
+	@Test
+	void 리뷰등록실패시_업로드이미지삭제() {
+		
+		ReviewService reviewService = mock(ReviewService.class);
+		VisitService visitService = mock(VisitService.class);
+		ReviewImageFileService imageService =
+				mock(ReviewImageFileService.class);
+		
+		ReviewController controller = 
+				new ReviewController(reviewService, visitService, imageService);
+		
+		Member member = new Member();
+		member.setMno(1);
+		
+		MockHttpSession session = new MockHttpSession();
+		session.setAttribute("member", member);
+		
+		Review review = new Review();
+		review.setVno(10);
+		review.setRating(5);
+		review.setContent("맛있어요");
+		
+		when(visitService.findApprovedVisit(10, 1))
+						.thenReturn(new Visit());
+		
+		when(reviewService.hasReview(10)).thenReturn(false);
+		
+		org.springframework.mock.web.MockMultipartFile file =
+				new org.springframework.mock.web.MockMultipartFile(
+						"image", "test.jpg", "image/jpeg", new byte[] {1, 2, 3}
+						);
+		
+		when(imageService.saveImage(file)).thenReturn("test.jpg");
+		
+		when(reviewService.insertReview(review))
+					.thenThrow(new DuplicateKeyException("중복 리뷰"));
+		
+		controller.write(review, file, session, new ConcurrentModel());
+		
+		verify(imageService).deleteImage("test.jpg");
 
+	}
+	
+	@Test
+	void 다른회원의_리뷰수정차단() {
+		
+		ReviewService reviewService = mock(ReviewService.class);
+		VisitService visitService = mock(VisitService.class);
+		ReviewImageFileService imageService =
+		            mock(ReviewImageFileService.class);
+
+		ReviewController controller =
+		            new ReviewController(reviewService, visitService, imageService);
+		
+		Member member = new Member();
+	    member.setMno(1);
+
+	    MockHttpSession session = new MockHttpSession();
+	    session.setAttribute("member", member);
+	    
+	    Review existingReview = new Review();
+	    existingReview.setRno(10);
+	    existingReview.setRno(20);
+	    
+	    when(reviewService.findByRno(10))
+	    			.thenReturn(existingReview);
+	    
+	    when(visitService.findApprovedVisit(20, 1))
+	    			.thenReturn(null);
+	    
+	    Review inputReview = new Review();
+	    inputReview.setRating(5);
+	    inputReview.setContent("수정 시도");
+	    
+	    String result = controller.edit(
+	    		10, inputReview, null, session, new ConcurrentModel()
+	     );
+	    
+	    assertEquals("redirect:/reviews/10", result);
+	    
+	   verify(reviewService, never()).updateReview(any(Review.class));
+	    
+	}
+	
+	
+	@Test
+	void 다른회원의_리뷰삭제차단() {
+
+	    ReviewService reviewService = mock(ReviewService.class);
+	    VisitService visitService = mock(VisitService.class);
+	    ReviewImageFileService imageService =
+	            mock(ReviewImageFileService.class);
+
+	    ReviewController controller =
+	            new ReviewController(reviewService, visitService, imageService);
+
+	    Member member = new Member();
+	    member.setMno(1);
+	    
+	    MockHttpSession session = new MockHttpSession();
+	    session.setAttribute("member", member);
+	    
+	    Review review = new Review();
+	    review.setRno(10);
+	    review.setRno(20);
+	    
+	    when(reviewService.findByRno(10)).thenReturn(review);
+	    
+	    when(visitService.findApprovedVisit(20,1)).thenReturn(null);
+	    
+	    String result = controller.delete(10, session);
+	    
+	    assertEquals("redirect:/reviews/10", result);
+	    
+	    verify(reviewService, never()).deleteReview(anyInt());
+	}
 }
 
 
