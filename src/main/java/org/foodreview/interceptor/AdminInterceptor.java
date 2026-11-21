@@ -19,7 +19,12 @@ public class AdminInterceptor implements HandlerInterceptor {
 	
 	 // Controller가 실행되기 전에 호출되는 메서드
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler ) throws Exception {
+	public boolean preHandle(
+			HttpServletRequest request, 
+			HttpServletResponse response, 
+			Object handler ) throws Exception {
+		
+		boolean apiRequest = request.getRequestURI().startsWith("/api/");
 		
 		// 기존 세션 가져오기
 		// false = 세션이 없어도 새로 만들지 않음
@@ -27,7 +32,11 @@ public class AdminInterceptor implements HandlerInterceptor {
 		
 		// 기존 세션이 없으면
 		if (session == null) {
-			response.sendRedirect("/login");
+			if (apiRequest) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			} else {
+				response.sendRedirect("/login");
+			}
 			return false; //Controller 실행 중단
 		}
 		
@@ -36,7 +45,11 @@ public class AdminInterceptor implements HandlerInterceptor {
 		
 		// 로그인 회원 정보가 없다면 로그인 화면으로 이동
 		if (loginMember == null) {
-			response.sendRedirect("/login");
+			if (apiRequest) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			} else {
+				response.sendRedirect("/login");
+			}
 			return false;
 		}
 		
@@ -46,13 +59,23 @@ public class AdminInterceptor implements HandlerInterceptor {
 		// 탈퇴하거나 비활성화된 회원이면 세션 종료
 		if (member == null || member.getActive() == 0) {
 			session.invalidate();
+			
+			if (apiRequest) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			} else {
 			response.sendRedirect("/login");
+			}
+			
 			return false;
 		}
 		
 		 // ADMIN 권한이 아니면 메인 페이지로 이동
 		if (!"ADMIN".equals(member.getRole())) {
+			if (apiRequest) {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			} else {
 			response.sendRedirect("/");
+			}
 			return false;
 		}
 		
