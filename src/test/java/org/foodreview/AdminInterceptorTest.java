@@ -30,6 +30,8 @@ public class AdminInterceptorTest {
 		
 		AdminInterceptor interceptor = new AdminInterceptor(memberService);
 		
+		when(request.getRequestURI()).thenReturn("/admin");
+		
 		Member loginMember = new Member();
 		loginMember.setMno(10);
 		
@@ -72,6 +74,8 @@ public class AdminInterceptorTest {
 
 		    AdminInterceptor interceptor = new AdminInterceptor(memberService);
 
+		    when(request.getRequestURI()).thenReturn("/admin");
+		    
 		    Member loginMember = new Member();
 		    loginMember.setMno(10);
 
@@ -110,6 +114,8 @@ public class AdminInterceptorTest {
 
 		    AdminInterceptor interceptor = new AdminInterceptor(memberService);
 
+		    when(request.getRequestURI()).thenReturn("/admin");
+		    
 		    Member loginMember = new Member();
 		    loginMember.setMno(10);
 

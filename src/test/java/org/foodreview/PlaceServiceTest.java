@@ -22,7 +22,7 @@ public class PlaceServiceTest {
 		
 		placeService.getPlaceList(null, "카페", 3);
 		
-		verify(placeMapper).getPlaceList(null, "카페", 10, 20);
+		verify(placeMapper).getPlaceList(null, "카페", 9, 18);
 		
 	}
 	
@@ -31,7 +31,7 @@ public class PlaceServiceTest {
 		PlaceMapper placeMapper = mock(PlaceMapper.class);
 		PlaceService placeService = new PlaceService(placeMapper);
 		placeService.getPlaceList(null, "카페", 1);
-		verify(placeMapper).getPlaceList(null, "카페", 10, 0);
+		verify(placeMapper).getPlaceList(null, "카페", 9, 0);
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ public class PlaceServiceTest {
 		PlaceMapper placeMapper = mock(PlaceMapper.class);
 		PlaceService placeService = new PlaceService(placeMapper);
 		placeService.getPlaceList(null, "카페", 2);
-		verify(placeMapper).getPlaceList(null, "카페", 10, 10);
+		verify(placeMapper).getPlaceList(null, "카페", 9, 9);
 	}
 	
 	@Test
