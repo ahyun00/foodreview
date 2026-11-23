@@ -28,7 +28,8 @@ public class WebConfig implements WebMvcConfigurer {
 						"/reviews/write", 
 						"/reviews/*/edit",  
 						"/reviews/*/delete",
-						"/visits/register"
+						"/visits/register",
+						"/api/reviews"
 					);
 		
 		 // 관리자 로그인 + 권한 검사

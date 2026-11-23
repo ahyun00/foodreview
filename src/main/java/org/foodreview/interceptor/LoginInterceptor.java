@@ -18,21 +18,39 @@ public class LoginInterceptor implements HandlerInterceptor  {
 		private final MemberService memberService;
 		
 		@Override
-		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		public boolean preHandle(
+				HttpServletRequest request, 
+				HttpServletResponse response, 
+				Object handler) throws Exception {
+			
+			if("/api/reviews".equals(request.getRequestURI())
+					&& "GET".equalsIgnoreCase(request.getMethod())) {
+				return true;
+			}
+			
+			boolean apiRequest = request.getRequestURI().startsWith("/api/");
 			
 			// 기존 세션을 가져옴
 			// false = 세션이 없더라도 새로 만들지 않음
 			HttpSession session = request.getSession(false);
 			
 			if (session == null) {
-				response.sendRedirect("/login");
+				if(apiRequest) {
+					response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				} else {
+					response.sendRedirect("/login");
+				}
 				return false; // Controller 실행 중단
 			}
 			
 			Member loginMember = (Member) session.getAttribute("member");
 			
 			if (loginMember == null) {
-				response.sendRedirect("/login");
+				if (apiRequest) {
+					response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				} else {
+					response.sendRedirect("/login");
+				}
 				return false;
 			}
 			
@@ -40,7 +58,11 @@ public class LoginInterceptor implements HandlerInterceptor  {
 			
 			if (currentMember == null || currentMember.getActive() == 0) {
 				session.invalidate();
-				response.sendRedirect("/login");
+				if (apiRequest) {
+					response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				} else {
+					response.sendRedirect("/login");
+				}
 				return false;
 			}
 			

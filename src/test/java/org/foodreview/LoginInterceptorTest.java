@@ -3,6 +3,7 @@ package org.foodreview;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.foodreview.interceptor.LoginInterceptor;
@@ -34,6 +35,7 @@ public class LoginInterceptorTest {
 		currentMember.setMno(10);
 		currentMember.setActive(0);
 		
+		when(request.getRequestURI()).thenReturn("/mypage");
 		when(request.getSession(false)).thenReturn(session);
 		when(session.getAttribute("member")).thenReturn(loginMember);
 		when(memberService.findByMno(10)).thenReturn(currentMember);
@@ -47,7 +49,30 @@ public class LoginInterceptorTest {
 		verify(response).sendRedirect("/login");
 		
 	}
+	
+	
+	@Test
+	void 비로그인_API요청_401반환() throws Exception {
 
+	    // given: 로그인 세션이 없는 상태
+		MemberService memberService = mock(MemberService.class);
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		
+		LoginInterceptor interceptor = new LoginInterceptor(memberService);
+		
+		when(request.getRequestURI()).thenReturn("/api/reviews");
+		when(request.getMethod()).thenReturn("POST");
+		when(request.getSession(false)).thenReturn(null);
+		
+		// when: 인터셉터 실행
+		boolean result = interceptor.preHandle(request, response, new Object());
+		
+		// then: 요청 차단 + HTTP 401 반환
+		assertFalse(result);
+		verify(response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		verifyNoInteractions(memberService);
+	}
 }
 
 
