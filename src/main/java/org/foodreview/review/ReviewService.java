@@ -86,6 +86,21 @@ public class ReviewService {
 		return reviewMapper.countAll();
 	}
 	
+	// 검색 조건에 맞는 리뷰 페이징 조회
+	public List<Review> searchReviews(String keyword, Integer rating, int page) {
+		
+		int size = 10;
+		int offset = (page - 1) * size;
+		
+		return reviewMapper.searchReviews(keyword, rating, size, offset);
+	}
+	
+	// 검색 조건에 맞는 전체 리뷰 개수 조회
+	public int countSearchReviews(String keyword, Integer rating) {
+		
+		return reviewMapper.countSearchReviews(keyword, rating);
+	}
+	
 	// 메인 페이지에 표시할 최신 리뷰
 	public List<Review> getHomeReviews() {
 		return reviewMapper.findRecentApprovedReviews();

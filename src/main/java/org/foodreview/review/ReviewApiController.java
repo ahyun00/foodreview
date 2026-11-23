@@ -18,15 +18,22 @@ public class ReviewApiController {
 	
 	@GetMapping("/api/reviews")
 	public ResponseEntity<Map<String, Object>> reviewList(
-			@RequestParam(name = "page",defaultValue = "1") int page) {
+			@RequestParam(name = "page",defaultValue = "1") int page,
+			@RequestParam(name = "keyword", required = false) String keyword,
+			@RequestParam(name = "rating", required = false) Integer rating) {
 		
 		if (page < 1) {
 			page =1;
 		}
 		
-		List<Review> reviews = reviewService.findByPage(page);
+		if (rating != null && (rating < 1 || rating > 5)) {
+			return ResponseEntity.badRequest()
+							.body(Map.of("message", "별점은 1~5점만 가능합니다."));
+		}
 		
-		int totalCount = reviewService.countAll();
+		List<Review> reviews = reviewService.searchReviews(keyword, rating, page);
+		
+		int totalCount = reviewService.countSearchReviews(keyword, rating);
 		
 		int totalPages = (int) Math.ceil(totalCount / 10.0);
 		

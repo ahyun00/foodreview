@@ -32,5 +32,27 @@ public interface ReviewMapper {
 	// 전체 리뷰 개수 조회
 	int countAll();
 	
+	// 검색 조건에 맞는 리뷰 페이징 조회
+	List<Review> searchReviews(
+			@Param("keyword") String keyword,
+			@Param("rating") Integer rating,
+			@Param("size") int size,
+			@Param("offset") int offset
+	);
+	
+	// 검색 조건에 맞는 전체 리뷰 개수 조회
+	int countSearchReviews(
+			@Param("keyword") String keyword,
+			@Param("rating") Integer rating
+	);
+	
+	
 	List<Review> findRecentApprovedReviews();
 }
+
+
+
+
+
+
+

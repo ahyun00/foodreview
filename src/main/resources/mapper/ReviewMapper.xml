@@ -109,6 +109,52 @@
     	from		review
     </select>
     
+    <!-- 검색 조건에 맞는 리뷰 페이징 조회 -->
+    <select id="searchReviews" resultType="org.foodreview.review.Review">
+    	SELECT 
+    			r.rno,
+    			r.vno,
+    			r.rating,
+    			r.content,
+    			r.review_image,
+    			r.reg_date,
+    			m.nickname,
+    			p.name AS place_name
+		FROM review r
+		JOIN visit v ON r.vno = v.vno
+		JOIN member m ON m.mno = v.mno
+		JOIN place p ON p.pno = v.pno
+		
+		<where>
+			<if test="keyword != null and keyword != ''">
+				AND p.name LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="rating != null">
+				AND r.rating = #{rating}
+			</if>
+		</where>
+    	
+    	ORDER BY r.rno DESC 
+    	LIMIT #{size} OFFSET #{offset}
+    </select>
+    
+    <!-- 검색 조건에 맞는 전체 리뷰 개수 -->
+    <select id="countSearchReviews" resultType="int">
+    	SELECT COUNT(*)
+    	FROM review r
+    	JOIN visit v ON r.vno = v.vno
+    	JOIN place p ON p.pno = v.pno
+    	
+    	<where>
+    		<if test="keyword != null and keyword != ''">
+    			AND p.name LIKE CONCAT('%', #{keyword}, '%')
+    		</if>
+    		<if test="rating != null">
+    			AND r.rating = #{rating}
+    		</if>
+    	</where>
+    </select>
+    
     <!-- 메인 페이지 최신 승인 리뷰 3개 -->
     <select id= "findRecentApprovedReviews"
     			resultType= "org.foodreview.review.Review">
