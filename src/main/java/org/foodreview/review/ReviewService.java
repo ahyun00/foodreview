@@ -46,7 +46,7 @@ public class ReviewService {
 	
 	
 	// 리뷰 입력값 검증 (등록, 수정 공통 사용)	
-	private void validateReview(Review review) {
+	public void validateReview(Review review) {
 		
 		// 별점이 없거나 1~5점 범위를 벗어나면 예외 발생
 	    if (review.getRating() == null

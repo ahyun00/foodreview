@@ -89,6 +89,9 @@ public class ReviewApiController {
 		String savedName = null;
 		
 		try {
+			// 이미지 저장 전에 별점과 리뷰 내용 검증
+			reviewService.validateReview(review);
+			
 			savedName = reviewImageFileService.saveImage(reviewFile);
 			review.setReviewImage(savedName);
 			
