@@ -99,6 +99,7 @@ GET /api/reviews?keyword=행복카페&rating=5&page=1
 | 2 | 거절 |
 
 ## 6. 데이터베이스
+![FoodReview ERD](docs/erd.png)
 
 | 테이블 | 설명 |
 | --- | --- |
