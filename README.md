@@ -186,6 +186,12 @@ WHERE vno = #{vno}
   </tr>
 </table>
 
+## 🏗️ 시스템 구성도
+
+<div align="center">
+  <img src="docs/architecture.png" width="850" alt="FoodReview Architecture">
+</div>
+
 ## 📐 ERD
 
 <div align="center">
@@ -260,10 +266,10 @@ bash gradlew test
 
 ## 📌 한계 및 개선 계획
 
-현재 로컬 환경에서 개발 및 검증을 진행했습니다.
+현재 로컬 환경에서 개발 및 검증을 진행했으며, 실제 동시 요청 환경에서의 테스트는 아직 수행하지 않았습니다.
 
 - 서버 배포 및 배포 환경 검증
-- 동시 요청 테스트 추가
+- 동시 요청에 대한 데이터 정합성 검증
 - 파일 시스템 오류 상황에 대한 검증
 - 자동화 테스트 범위 확대
 
@@ -359,7 +365,5 @@ VALUES
 <div align="center">
 
 **FoodReview**
-
-Real visits. Real reviews.
 
 </div>
